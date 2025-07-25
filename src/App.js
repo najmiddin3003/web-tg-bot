@@ -1,19 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-export default function HomePage() {
-	const [user, setUser] = useState(null)
+const App = () => {
+	const [count, setCount] = useState(0)
+
+	const handleClick = useCallback(() => {
+		setCount(count => count + 1)
+	})
 
 	useEffect(() => {
-		const tg = window.Telegram?.WebApp
-		if (tg) {
-			tg.ready()
-			setUser(tg.initDataUnsafe?.user)
-		}
-	}, [])
+		const { MainButton } = window.Telegram.WebApp
+
+		MainButton.setText('increment')
+		MainButton.onClick(handleClick)
+		MainButton.show()
+	})
 
 	return (
 		<div>
-			<h1>Welcome {user?.first_name} xush kelibsan</h1>
+			<button onClick={handleClick}>Click me</button>
 		</div>
 	)
 }
+
+export default App
